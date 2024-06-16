@@ -16,7 +16,7 @@ import {
  */
 interface TwirpServerOptions<
   T extends object,
-  S extends TwirpContext = TwirpContext,
+  S extends TwirpContext = TwirpContext
 > {
   service: T;
   packageName: string;
@@ -39,7 +39,7 @@ export type TwirpHandler<T, S extends TwirpContext = TwirpContext> = (
   ctx: S,
   service: T,
   data: Buffer,
-  interceptors?: Interceptor<S, any, any>[],
+  interceptors?: Interceptor<S, any, any>[]
 ) => Promise<Uint8Array | string>;
 
 /**
@@ -57,7 +57,7 @@ type keys<T extends object> = Array<keyof T>;
  */
 export class TwirpServer<
   T extends object,
-  S extends TwirpContext = TwirpContext,
+  S extends TwirpContext = TwirpContext
 > {
   public readonly packageName: string;
   public readonly serviceName: string;
@@ -69,7 +69,7 @@ export class TwirpServer<
   private interceptors: Interceptor<S, any, any>[] = [];
   private matchRoute: (
     method: string,
-    events: RouterEvents<S>,
+    events: RouterEvents<S>
   ) => TwirpHandler<T, S>;
 
   constructor(options: TwirpServerOptions<T, S>) {
@@ -156,7 +156,7 @@ export class TwirpServer<
    */
   protected createContext(
     req: http.IncomingMessage,
-    res: http.ServerResponse,
+    res: http.ServerResponse
   ): S {
     return {
       packageName: this.packageName,
@@ -176,7 +176,7 @@ export class TwirpServer<
    */
   private async _httpHandler(
     req: http.IncomingMessage,
-    resp: http.ServerResponse,
+    resp: http.ServerResponse
   ) {
     const ctx = this.createContext(req, resp);
 
@@ -186,7 +186,7 @@ export class TwirpServer<
       const { method, mimeContentType } = validateRequest(
         ctx,
         req,
-        this.pathPrefix || "",
+        this.pathPrefix || ""
       );
 
       const handler = this.matchRoute(method, {
@@ -204,7 +204,7 @@ export class TwirpServer<
         ctx,
         this.service,
         body,
-        this.interceptors,
+        this.interceptors
       );
 
       await Promise.all([
@@ -217,9 +217,9 @@ export class TwirpServer<
       resp.setHeader("Content-Type", mimeContentType);
       resp.end(response);
     } catch (e) {
-      await this.invokeHook("error", ctx, mustBeTwirpError(e));
+      await this.invokeHook("error", ctx, mustBeTwirpError(e as Error));
       if (!resp.headersSent) {
-        writeError(resp, e);
+        writeError(resp, e as Error);
       }
     } finally {
       await Promise.all([
@@ -240,7 +240,7 @@ export class TwirpServer<
   protected async invokeHook(
     hookName: keyof ServerHooks<S>,
     ctx: S,
-    err?: TwirpError,
+    err?: TwirpError
   ) {
     if (this.hooks.length === 0) {
       return;
@@ -261,7 +261,7 @@ export class TwirpServer<
  */
 export function writeError(
   res: http.ServerResponse,
-  error: Error | TwirpError,
+  error: Error | TwirpError
 ): void {
   const twirpError = mustBeTwirpError(error);
 

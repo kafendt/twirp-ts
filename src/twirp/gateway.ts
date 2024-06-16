@@ -134,7 +134,7 @@ export class Gateway {
 
         res.end(jsonResponse);
       } catch (e) {
-        writeError(res, e);
+        writeError(res, e as Error);
       }
     };
   }
@@ -178,7 +178,10 @@ export class Gateway {
         }
       } catch (e) {
         const msg = "the json request could not be decoded";
-        throw new TwirpError(TwirpErrorCode.Malformed, msg).withCause(e, true);
+        throw new TwirpError(TwirpErrorCode.Malformed, msg).withCause(
+          e as Error,
+          true
+        );
       }
     }
 
