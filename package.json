@@ -11,6 +11,7 @@
   },
   "files": [
     "**/*.ts",
+    "tsconfig.json",
     "!.github/**/*",
     "!.idea/**/*",
     "!example/**/*",
