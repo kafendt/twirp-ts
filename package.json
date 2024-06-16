@@ -24,7 +24,7 @@
     "lint": "prettier -c src/**/*.ts",
     "test": "jest",
     "test:coverage": "jest --coverage",
-    "postinstall": "tsc --outDir ./build"
+    "postinstall": "tsc -p ./ --outDir ./build"
   },
   "keywords": [
     "Twirp",
