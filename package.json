@@ -9,6 +9,15 @@
   "repository": {
     "url": "https://github.com/hopin-team/twirp-ts"
   },
+  "files": [
+    "**/*.ts",
+    "!.github/**/*",
+    "!.idea/**/*",
+    "!example/**/*",
+    "!coverage/**/*",
+    "!**/__tests__/*.ts",
+    "!**/__mocks__/*.ts"
+  ],
   "scripts": {
     "build": "tsc",
     "format": "prettier -w src/**/*.ts",

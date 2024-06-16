@@ -1,6 +1,4 @@
 example/
 coverage/
-**/__test__
-**/__mock__
 .idea/
 .github/
